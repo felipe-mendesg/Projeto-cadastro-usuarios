@@ -1,0 +1,12 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Bebas Neue", sans-serif;
+}
+
+body{
+  min-height: 100vh;
+  width: 100vw;
+  background: linear-gradient(180deg, #e1e1e9 0%, rgba(1, 1, 39, 0.8) 100%);
+}

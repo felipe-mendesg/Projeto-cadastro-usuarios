@@ -5,16 +5,19 @@ import api from "../../services/api";
 
 function Home() {
   const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const [editUserId, setEditUserId] = useState(null);
 
   const inputName = useRef();
   const inputAge = useRef();
   const inputEmail = useRef();
+  const searchInput = useRef();
 
   async function getUsers() {
     const usersFromApi = await api.get("/usuarios");
     setUsers(usersFromApi.data);
+    setFilteredUsers(usersFromApi.data); // Inicializa os usuários filtrados
   }
 
   async function createUser() {
@@ -58,6 +61,15 @@ function Home() {
     getUsers();
   }
 
+  // Nova função para filtrar usuários
+  function filterUsers() {
+    const searchTerm = searchInput.current.value.toLowerCase();
+    const results = users.filter((user) =>
+      user.name.toLowerCase().includes(searchTerm)
+    );
+    setFilteredUsers(results);
+  }
+
   useEffect(() => {
     getUsers();
   }, []);
@@ -78,7 +90,15 @@ function Home() {
         {editMode && <button type="button" onClick={clearForm}>Cancelar</button>}
       </form>
 
-      {users.map((user) => (
+      {/* Campo de busca */}
+      <input
+        placeholder="Buscar por nome"
+        type="text"
+        ref={searchInput}
+        onChange={filterUsers}
+      />
+
+      {filteredUsers.map((user) => (
         <div key={user.id} className="card">
           <div>
             <p>Nome: <span>{user.name}</span></p>
@@ -96,4 +116,3 @@ function Home() {
 }
 
 export default Home;
-
